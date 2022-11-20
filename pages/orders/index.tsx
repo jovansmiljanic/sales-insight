@@ -1,0 +1,36 @@
+// Vendor types
+import { GetServerSideProps } from "next";
+
+// GLobal components
+import { Layout } from "@components";
+
+// Global types
+import { Order } from "@types";
+
+// Global containers
+import { Orders } from "@containers";
+
+interface ContentPageProps {
+  orders: Order[];
+}
+
+export default function Page({ orders }: ContentPageProps) {
+  return (
+    <Layout title="Orders">
+      <Orders {...{ orders }} />
+    </Layout>
+  );
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const headers: any = ctx.req.headers;
+
+  const orderResult = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`, {
+    headers,
+  });
+  const { orders } = await orderResult.json();
+
+  return {
+    props: { orders },
+  };
+};
