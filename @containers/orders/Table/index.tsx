@@ -1,11 +1,12 @@
 // Core types
-import type { FC } from "react";
+import { FC, useRef } from "react";
 
 // GLobal components
-import { Heading } from "@components";
+import { Button, Heading } from "@components";
 
 // Vendors
 import styled, { css } from "styled-components";
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
 // Global types
 import { Order } from "@types";
@@ -72,77 +73,84 @@ const index: FC<Result> = ({ order }) => {
   const month = orderDate.getMonth();
   const year = orderDate.getFullYear();
 
+  const contentArea = useRef(null);
+
+  const handleExportPdf = (e: any) => {
+    if (contentArea?.current) {
+      savePDF(contentArea.current, { paperSize: "A4" });
+    }
+  };
   return (
     <>
-      <Head>
-        <Wrap>
-          <Heading as="h6" padding={{ md: { right: 1 }, sm: { right: 1 } }}>
-            Prodavac:
-          </Heading>
-          <Heading as="h6" weight="semiBold">
-            {order.owner}
-          </Heading>
-        </Wrap>
+      <PDFExport>
+        <div ref={contentArea}>
+          <Head>
+            <Wrap>
+              <Heading as="h6">Prodavac:</Heading>
+              <Heading as="h6" weight="bold">
+                {order.owner}
+              </Heading>
+            </Wrap>
 
-        <Wrap>
-          <Heading as="h6" padding={{ md: { right: 1 }, sm: { right: 1 } }}>
-            Kupac:
-          </Heading>
+            <Wrap>
+              <Heading as="h6">Kupac:</Heading>
 
-          <Heading as="h6" weight="semiBold">
-            {order.customer.name}
-          </Heading>
-        </Wrap>
+              <Heading as="h6" weight="bold">
+                {order.customer.name}
+              </Heading>
+            </Wrap>
 
-        <Wrap>
-          <Heading as="h6" padding={{ md: { right: 1 }, sm: { right: 1 } }}>
-            Valuta:
-          </Heading>
-          <Heading as="h6" weight="semiBold">
-            {order.valuta}
-          </Heading>
-        </Wrap>
+            <Wrap>
+              <Heading as="h6">Valuta:</Heading>
+              <Heading as="h6" weight="bold">
+                {order.valuta}
+              </Heading>
+            </Wrap>
 
-        <Wrap>
-          <Heading as="h6" padding={{ md: { right: 1 }, sm: { right: 1 } }}>
-            Adresa:
-          </Heading>
-          <Heading as="h6" weight="semiBold">
-            {order.address}
-          </Heading>
-        </Wrap>
+            <Wrap>
+              <Heading as="h6">Adresa:</Heading>
+              <Heading as="h6" weight="bold">
+                {order.address}
+              </Heading>
+            </Wrap>
 
-        <Wrap>
-          <Heading as="h6" padding={{ md: { right: 1 }, sm: { right: 1 } }}>
-            Datum:
-          </Heading>
-          <Heading as="h6" weight="semiBold">
-            {day}/{month + 1}/{year}.
-          </Heading>
-        </Wrap>
-      </Head>
+            <Wrap>
+              <Heading as="h6">Datum:</Heading>
+              <Heading as="h6" weight="bold">
+                {day} / {month + 1} / {year}
+              </Heading>
+            </Wrap>
+          </Head>
 
-      <Table>
-        <thead>
-          <tr>
-            <td>Artikal:</td>
-            <td>Kolicina:</td>
-            <td>Cena sa pdv:</td>
-            <td></td>
-          </tr>
-        </thead>
+          <Table>
+            <thead>
+              <tr>
+                <td>Artikal:</td>
+                <td>Kolicina:</td>
+                <td>Cena sa pdv:</td>
+              </tr>
+            </thead>
 
-        <tbody>
-          {order.articles.map((article, i) => (
-            <tr key={i}>
-              <td>{article.name}</td>
-              <td>{article.quantity} kom</td>
-              <td>{article.price} din</td>
-              <td></td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+            <tbody>
+              {order.articles.map((article, i) => (
+                <tr key={i}>
+                  <td>{article.name}</td>
+                  <td>{article.quantity} kom</td>
+                  <td>{article.price} din</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      </PDFExport>
+
+      <Button
+        variant="primary"
+        onClick={handleExportPdf}
+        margin={{ md: { top: 1 }, sm: { top: 1 } }}
+      >
+        Preumzmi
+      </Button>
     </>
   );
 };
