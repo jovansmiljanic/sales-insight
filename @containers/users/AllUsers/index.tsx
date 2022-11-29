@@ -13,11 +13,10 @@ import { useSession } from "next-auth/react";
 // Vendors
 import styled from "styled-components";
 
-// Client utils
-import { deleteUser } from "@utils/client";
-
 // Global styles
 import { Field, Label } from "@styles";
+import axios, { AxiosResponse } from "axios";
+import { useRouter } from "next/router";
 
 const UserWrap = styled.div`
   display: flex;
@@ -33,6 +32,23 @@ const index: FC<AllUsers> = ({ users }) => {
   const { data: session } = useSession();
 
   let updatedUsers = users.filter(({ _id }) => _id !== session?.user._id);
+
+  const router = useRouter();
+
+  const deleteUser = async (_id: any) => {
+    await axios({
+      method: "DELETE",
+      url: "/api/registration",
+      data: _id,
+    })
+      .then((res: AxiosResponse) => {
+        router.push("/");
+      })
+      .catch(({ response }) => {
+        // Set error message
+        console.log(response?.statusText);
+      });
+  };
 
   return (
     <>

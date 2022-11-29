@@ -23,11 +23,7 @@ export default function Page({ orders }: ContentPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const headers: any = ctx.req.headers;
-
-  const orderResult = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`, {
-    headers,
-  });
+  const orderResult = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`);
   const { orders } = await orderResult.json();
 
   return {

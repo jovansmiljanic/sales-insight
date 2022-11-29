@@ -26,15 +26,6 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Process a GET request
   if (method === "GET") {
-    const { body } = req;
-
-    // If user has no access, return an error
-    if (!session) {
-      return res
-        .status(401)
-        .send({ error: "Please login to perform the action." });
-    }
-
     // Grab current user
     const users = await User.find({});
 
@@ -81,6 +72,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { body } = req;
+    console.log(body);
 
     // Grab current user
     await User.deleteOne({ _id: body });

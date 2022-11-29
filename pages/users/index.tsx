@@ -23,13 +23,8 @@ export default function Page({ users }: ContentPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const headers: any = ctx.req.headers;
-
   const userResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/registration`,
-    {
-      headers,
-    }
+    `${process.env.NEXTAUTH_URL}/api/registration`
   );
   const { users } = await userResult.json();
 

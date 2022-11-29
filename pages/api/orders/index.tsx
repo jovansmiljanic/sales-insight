@@ -25,12 +25,6 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   if (method === "GET") {
     // If user has no access, return an error
 
-    if (!session) {
-      return res
-        .status(401)
-        .send({ error: "Please login to perform the action." });
-    }
-
     // Grab current user
     const orders = await Order.find({}).sort({ createdAt: -1 });
 

@@ -38,22 +38,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Check session
   const session = await getSession(ctx);
 
-  const headers: any = ctx.req.headers;
+  // const headers: any = ctx.req.headers;
 
   const articleResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/articles`,
-    {
-      headers,
-    }
+    `${process.env.NEXTAUTH_URL}/api/articles`
+    // {
+    //   headers,
+    // }
   );
 
   const { articlesData } = await articleResult.json();
 
   const customerResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/customers`,
-    {
-      headers,
-    }
+    `${process.env.NEXTAUTH_URL}/api/customers`
+    // {
+    //   headers,
+    // }
   );
   const { customersData } = await customerResult.json();
 
