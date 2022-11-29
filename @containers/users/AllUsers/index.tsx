@@ -8,15 +8,15 @@ import { Button, Heading } from "@components";
 import { User } from "@types";
 
 // NextJS
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 // Vendors
 import styled from "styled-components";
+import axios, { AxiosResponse } from "axios";
 
 // Global styles
 import { Field, Label } from "@styles";
-import axios, { AxiosResponse } from "axios";
-import { useRouter } from "next/router";
 
 const UserWrap = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ interface AllUsers {
 const index: FC<AllUsers> = ({ users }) => {
   const { data: session } = useSession();
 
-  let updatedUsers = users.filter(({ _id }) => _id !== session?.user._id);
+  const updatedUsers = users.filter(({ _id }) => _id !== session?.user._id);
 
   const router = useRouter();
 
@@ -55,7 +55,7 @@ const index: FC<AllUsers> = ({ users }) => {
       <Heading
         as="h2"
         weight="bold"
-        padding={{ md: { bottom: 3 }, sm: { bottom: 2 } }}
+        padding={{ md: { bottom: 3 }, sm: { top: 8, bottom: 2 } }}
       >
         Svi komercijalisti
       </Heading>
@@ -75,7 +75,7 @@ const index: FC<AllUsers> = ({ users }) => {
 
               <Button
                 variant="danger"
-                margin={{ md: { top: 1 } }}
+                margin={{ md: { top: 1 }, sm: { top: 1 } }}
                 onClick={() => deleteUser(users._id)}
               >
                 Izbrisi

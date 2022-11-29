@@ -12,6 +12,7 @@ import { Order } from "@types";
 
 // Vendors
 import styled from "styled-components";
+import { Heading } from "@components";
 
 const Wrap = styled.div`
   margin-bottom: 30px;
@@ -26,6 +27,14 @@ const index: FC<Orders> = ({ orders }) => {
     <Container>
       <Row padding={{ md: { top: 4 } }}>
         <Column responsivity={{ md: 12 }}>
+          <Heading
+            as="h2"
+            weight="semiBold"
+            padding={{ md: { top: 3, bottom: 3 }, sm: { top: 5, bottom: 6 } }}
+          >
+            Pogledaj sva trebovanja
+          </Heading>
+
           {Array.isArray(orders) &&
             orders.map((order, i) => (
               <Wrap key={i}>

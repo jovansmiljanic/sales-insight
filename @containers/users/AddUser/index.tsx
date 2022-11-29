@@ -52,7 +52,11 @@ const index: FC = () => {
 
   return (
     <>
-      <Heading as="h2" weight="bold" padding={{ md: { bottom: 3 } }}>
+      <Heading
+        as="h2"
+        weight="bold"
+        padding={{ md: { bottom: 3 }, sm: { bottom: 2 } }}
+      >
         Dodaj komercijalistu
       </Heading>
 

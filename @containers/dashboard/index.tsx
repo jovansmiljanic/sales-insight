@@ -127,7 +127,7 @@ const index: FC<Dashboard> = ({ articlesData, customersData }) => {
             <Button
               variant="danger"
               type="button"
-              margin={{ md: { top: 1, right: 1 }, sm: { top: 1 } }}
+              margin={{ md: { top: 1, right: 1 }, sm: { top: 1, right: 1 } }}
               onClick={() => resetOrder()}
             >
               Resetuj
