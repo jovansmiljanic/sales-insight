@@ -5,26 +5,26 @@ import { GetServerSideProps } from "next";
 import { Layout } from "@components";
 
 // Global types
-import { Order } from "@types";
+import { Order as Ordertype } from "@types";
 
 // Global containers
-import { Login, Orders } from "@containers";
+import { Login, Order } from "@containers";
 
 // Vendors
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 
 interface ContentPageProps {
-  orders: Order[];
+  order: Ordertype;
   session: Session;
 }
 
-export default function Page({ orders, session }: ContentPageProps) {
+export default function Page({ order, session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Orders">
-      <Orders {...{ orders }} />
+    <Layout title={`Trebovanje: ${order._id}`}>
+      <Order {...{ order }} />
     </Layout>
   );
 }
@@ -36,7 +36,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const orderResult = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`);
   const { orders } = await orderResult.json();
 
+  // Pass data to the page via props
+  const order = orders.find(({ _id }: any) => _id === ctx.params?.orderId);
+
   return {
-    props: { orders, session },
+    props: { order, session },
   };
 };

@@ -148,18 +148,6 @@ const index: FC = () => {
           <UserWrap>{session?.user.userName}</UserWrap>
 
           <OptionsWrap>
-            {session?.user.role === 1 && (
-              <>
-                <Link href="/orders">
-                  <a>Trebovanja</a>
-                </Link>
-
-                <Link href="/users">
-                  <a>Komercijalisti</a>
-                </Link>
-              </>
-            )}
-
             <SignOut onClick={() => signOut()}>Odjava</SignOut>
           </OptionsWrap>
         </UserModal>

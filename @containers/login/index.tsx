@@ -208,7 +208,6 @@ const index: FC = () => {
                     <Field
                       type="text"
                       name="userName"
-                      placeholder="Korisnicko ime"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.userName}
@@ -220,11 +219,10 @@ const index: FC = () => {
                   </Group>
 
                   <Group>
-                    <Label>Sifra *</Label>
+                    <Label>Šifra</Label>
                     <Field
                       type="password"
                       name="password"
-                      placeholder="Sifra"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.password}

@@ -2,34 +2,27 @@
 import { Layout } from "@components";
 
 // Global containers
-import { Dashboard, Login } from "@containers";
+import { Login, Orders } from "@containers";
 
 // Global types
-import { Article, Customer } from "@types";
+import { Order } from "@types";
 
 // Vendors
+import { Session } from "next-auth";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
-// Vendor types
-import type { Session } from "next-auth";
-
 interface ContentPageProps {
+  orders: Order[];
   session: Session;
-  articlesData: Article[];
-  customersData: Customer[];
 }
 
-export default function Page({
-  articlesData,
-  customersData,
-  session,
-}: ContentPageProps) {
+export default function Page({ orders, session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Dashboard">
-      <Dashboard {...{ articlesData }} {...{ customersData }} />
+    <Layout title="Trebovanja">
+      <Orders orders={orders} />
     </Layout>
   );
 }
@@ -38,26 +31,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Check session
   const session = await getSession(ctx);
 
-  // const headers: any = ctx.req.headers;
+  const orderResult = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`);
+  const { orders } = await orderResult.json();
 
-  const articleResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/articles`
-    // {
-    //   headers,
-    // }
+  const finalOrders = orders.filter(
+    (order: Order) => order.owner === session?.user.userName
   );
-
-  const { articlesData } = await articleResult.json();
-
-  const customerResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/customers`
-    // {
-    //   headers,
-    // }
-  );
-  const { customersData } = await customerResult.json();
 
   return {
-    props: { articlesData, customersData, session },
+    props: { orders: finalOrders, session },
   };
 };

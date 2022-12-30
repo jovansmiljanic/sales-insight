@@ -8,13 +8,20 @@ import { Layout } from "@components";
 import { User } from "@types";
 
 // Global containers
-import { Users } from "@containers";
+import { Login, Users } from "@containers";
+
+// Vendors
+import { Session } from "next-auth";
+import { getSession } from "next-auth/react";
 
 interface ContentPageProps {
   users: User[];
+  session: Session;
 }
 
-export default function Page({ users }: ContentPageProps) {
+export default function Page({ users, session }: ContentPageProps) {
+  if (!session) return <Login />;
+
   return (
     <Layout title="Komercijalisti">
       <Users {...{ users }} />
@@ -23,12 +30,13 @@ export default function Page({ users }: ContentPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const userResult = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/registration`
-  );
+  // Check session
+  const session = await getSession(ctx);
+
+  const userResult = await fetch(`${process.env.NEXTAUTH_URL}/api/users`);
   const { users } = await userResult.json();
 
   return {
-    props: { users },
+    props: { users, session },
   };
 };

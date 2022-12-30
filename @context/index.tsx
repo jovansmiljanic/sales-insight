@@ -39,6 +39,8 @@ interface AppContext {
   setResult: Function;
   isActive?: boolean;
   setIsActive: (props: boolean) => void;
+  activeItem: string;
+  setActiveItem: Function;
 }
 
 export const Store: FC<Props> = (props) => {
@@ -68,6 +70,9 @@ export const Store: FC<Props> = (props) => {
 
   const [isActive, setIsActive] = useState(false);
   const isActiveMemo = useMemo(() => isActive, [isActive]);
+
+  const [activeItem, setActiveItem] = useState("");
+  const activeItemMemo = useMemo(() => activeItem, [activeItem]);
 
   useEffect(() => {
     // Check if users device is smaller than 768px and enable Phone layout
@@ -117,6 +122,8 @@ export const Store: FC<Props> = (props) => {
           setIsActive,
           result: resultMemo,
           setResult,
+          activeItem: activeItemMemo,
+          setActiveItem,
         } as AppContext
       }
     >

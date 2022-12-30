@@ -102,8 +102,8 @@ const index: FC<Dashboard> = ({ articlesData, customersData }) => {
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
           <Container>
-            <Row padding={{ md: { top: 10 }, sm: { top: 8 } }}>
-              <Column responsivity={{ md: 12 }} padding={{ md: { top: 2 } }}>
+            <Row>
+              <Column responsivity={{ md: 12 }}>
                 <Customer customersData={customersData} />
                 <Articles articlesData={articlesData} />
               </Column>

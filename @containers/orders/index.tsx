@@ -11,33 +11,60 @@ import { Table } from "./Table";
 import { Order } from "@types";
 
 // Vendors
-import styled from "styled-components";
-import { Heading } from "@components";
+import styled, { css } from "styled-components";
+import { useRouter } from "next/router";
 
 const Wrap = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 interface Orders {
   orders: Order[];
 }
 
+const TableHead = styled.table`
+  width: 100%;
+
+  td {
+    padding: 8px 10px;
+  }
+
+  thead {
+    td {
+      width: 20%;
+      color: #999999;
+
+      &:nth-child(1) {
+        width: 40%;
+      }
+
+      ${({ theme: { font } }) => css`
+        font-weight: ${font.weight.semiBold};
+      `}
+    }
+  }
+`;
+
 const index: FC<Orders> = ({ orders }) => {
+  const router = useRouter();
   return (
     <Container>
-      <Row padding={{ md: { top: 4 } }}>
+      <Row>
         <Column responsivity={{ md: 12 }}>
-          <Heading
-            as="h2"
-            weight="semiBold"
-            padding={{ md: { top: 3, bottom: 3 }, sm: { top: 5, bottom: 6 } }}
-          >
-            Pogledaj sva trebovanja
-          </Heading>
+          <TableHead>
+            <thead>
+              <tr>
+                <td>Naziv kupca</td>
+                <td>Komercijalista</td>
+                <td>Valuta</td>
+                <td>Datum</td>
+              </tr>
+            </thead>
+          </TableHead>
 
           {Array.isArray(orders) &&
             orders.map((order, i) => (
-              <Wrap key={i}>
+              <Wrap key={i} onClick={() => router.push(`/orders/${order._id}`)}>
                 <Table order={order} />
               </Wrap>
             ))}

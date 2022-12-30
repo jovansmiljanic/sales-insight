@@ -19,6 +19,7 @@ const defaultTheme: ThemeType = {
     danger: "#dc3545",
     textColor: "#222930",
     lightGray: "#d4d4d4",
+    lighterGray: "#ededed",
   },
   font: {
     size: 16,

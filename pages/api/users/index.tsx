@@ -36,7 +36,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   // Process a POST request
   if (method === "POST") {
     const {
-      body: { userName, password },
+      body: { fullName, userName, password },
     } = req;
 
     const isUserNameTaken = Boolean(await User.findOne({ userName }));
@@ -48,8 +48,12 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const encryptedPassword = await bcrypt.hash(password, 8);
 
+    const [firstName, lastName] = fullName.split(" ");
+
     // Create user model object
     const user = new User({
+      firstName,
+      lastName,
       userName,
       password: encryptedPassword,
       role: 2,
@@ -72,7 +76,6 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { body } = req;
-    console.log(body);
 
     // Grab current user
     await User.deleteOne({ _id: body });
