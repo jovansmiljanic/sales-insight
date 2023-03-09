@@ -23,7 +23,7 @@ export default function Page({ users, session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Komercijalisti">
+    <Layout title="Komercijalisti" session={session}>
       <Users {...{ users }} />
     </Layout>
   );

@@ -23,11 +23,63 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Process a GET request
   if (method === "GET") {
+    const {
+      query: { limit, skip, ...query },
+    } = req;
+
+    // Restructure query based on Collection schema
+    const getQuery = (query: {
+      [x: string]: string | string[] | undefined;
+    }) => {
+      return Object.entries(query).reduce(
+        (p, [key, val]) => {
+          switch (key) {
+            case "searchQuery":
+              return {
+                ...p,
+                name: val
+                  ? {
+                      $regex: new RegExp(val.toString(), "i"),
+                    }
+                  : "",
+              };
+
+            case "type":
+              const types = val?.toString().split(",");
+              return { ...p, [key]: types?.map((type) => type) };
+
+            case "topic":
+              const topics = val?.toString().split(",");
+              return { ...p, [key]: topics?.map((topic) => topic) };
+
+            default:
+              return { ...p, [key]: val };
+          }
+        },
+        {} // Start
+      );
+    };
+
+    const length = await Customer.find({
+      ...getQuery(query),
+    })
+      .sort({ createdAt: -1 })
+      .count();
+
     // Grab current user
-    const customersData = await Customer.find({});
+    // const customersData = await Customer.find({});
 
     // Return the object
-    return res.send({ customersData });
+    // return res.send({ customersData });
+    const customers = await Customer.find({
+      ...getQuery(query),
+    })
+      .skip(Number(skip) * Number(limit))
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    // Return the object
+    return res.send({ items: customers, length });
   }
 
   // Process a POST request

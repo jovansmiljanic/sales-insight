@@ -17,7 +17,7 @@ export default function Page({ session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Dodaj komercijalistu">
+    <Layout title="Dodaj komercijalistu" session={session}>
       <AddUser />
     </Layout>
   );

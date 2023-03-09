@@ -1,16 +1,13 @@
 // Vendors
 import styled, { css } from "styled-components";
 
-type Label = {};
-
-export const Label = styled.label<Label>`
+export const Label = styled.label`
   flex: 0 0 100%;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 
-  ${({ theme: { defaults, font, colors } }) => css`
-    font-weight: ${font.weight.semiBold};
+  ${({ theme: { defaults, colors } }) => css`
     color: ${colors.black};
-    margin-bottom: ${defaults.gutter / 4}px;
+    margin-bottom: ${defaults.gutter / 2}rem;
   `}
 `;

@@ -17,6 +17,7 @@ export interface Theme {
     textColor: string;
     lightGray: string;
     lighterGray: string;
+    background: string;
   };
   font: {
     size: number;

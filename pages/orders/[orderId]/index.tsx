@@ -23,7 +23,7 @@ export default function Page({ order, session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title={`Trebovanje: ${order._id}`}>
+    <Layout title={`Trebovanje: ${order._id}`} session={session}>
       <Order {...{ order }} />
     </Layout>
   );

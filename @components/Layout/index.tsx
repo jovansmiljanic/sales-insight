@@ -17,10 +17,12 @@ import { Heading } from "@components";
 
 // Vendors
 import styled from "styled-components";
+import { Session } from "next-auth";
 
 interface Layout {
   title: string;
   children: React.ReactNode;
+  session: Session;
 }
 
 const Layout = styled.div`
@@ -33,7 +35,7 @@ const Main = styled.div`
   width: 100%;
 `;
 
-const index: FC<Layout> = ({ title, children }) => {
+const index: FC<Layout> = ({ title, children, session }) => {
   return (
     <Layout>
       <Head>
@@ -43,16 +45,16 @@ const index: FC<Layout> = ({ title, children }) => {
       <Header />
 
       <Container>
-        <Row padding={{ md: { top: 10 } }}>
+        <Row>
           <Column responsivity={{ md: 3 }}>
-            <Sidebar />
+            <Sidebar session={session} />
           </Column>
 
           <Column responsivity={{ md: 9 }}>
             <Heading
               as="h4"
               weight="semiBold"
-              padding={{ md: { bottom: 5, left: 2 }, sm: { bottom: 2 } }}
+              padding={{ md: { top: 8,bottom: 5, left: 2 }, sm: { bottom: 2 } }}
             >
               {title}
             </Heading>

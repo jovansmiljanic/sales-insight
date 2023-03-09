@@ -7,7 +7,7 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
 // Global types
 import { Order } from "@types";
-import { truncateString } from "@utils/client";
+import { truncateString } from "@utils/shared";
 
 const TableHead = styled.table`
   width: 100%;

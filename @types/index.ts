@@ -20,3 +20,24 @@ export type {
   MarginTypes,
   Colors,
 } from "./theme/style";
+
+import { Colors } from "./theme/colors";
+
+export type TIconList =
+  | "toggle-arrow"
+  | "toggle-eye"
+  | "filter"
+  | "search"
+  | "copy"
+  | "twitter"
+  | "linkedin"
+  | "facebook"
+  | "add"
+  | "remove"
+  | "language";
+
+export interface IIcon {
+  $size?: 1 | 2 | 3;
+  $color?: Colors;
+  $toggled?: boolean;
+}

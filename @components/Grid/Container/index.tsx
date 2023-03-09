@@ -63,6 +63,10 @@ export const Container = styled.div<Props>`
     @media (min-width: ${breakpoints.lg}px) {
       max-width: ${breakpoints.lg - 30}px;
     }
+
+    @media (min-width: ${breakpoints.xl}px) {
+      max-width: ${breakpoints.xl - 30}px;
+    }
     `}
 
     // Dynamic alignment

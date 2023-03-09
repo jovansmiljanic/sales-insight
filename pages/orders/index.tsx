@@ -23,7 +23,7 @@ export default function Page({ orders, session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Orders">
+    <Layout title="Orders" session={session}>
       <Orders {...{ orders }} />
     </Layout>
   );

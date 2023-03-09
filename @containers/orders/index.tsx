@@ -13,6 +13,7 @@ import { Order } from "@types";
 // Vendors
 import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
+import { Grid } from "@components";
 
 const Wrap = styled.div`
   margin-bottom: 20px;
@@ -47,6 +48,7 @@ const TableHead = styled.table`
 
 const index: FC<Orders> = ({ orders }) => {
   const router = useRouter();
+
   return (
     <Container>
       <Row>
@@ -62,12 +64,13 @@ const index: FC<Orders> = ({ orders }) => {
             </thead>
           </TableHead>
 
-          {Array.isArray(orders) &&
+          <Grid $apiPath="orders" />
+          {/* {Array.isArray(orders) &&
             orders.map((order, i) => (
               <Wrap key={i} onClick={() => router.push(`/orders/${order._id}`)}>
                 <Table order={order} />
               </Wrap>
-            ))}
+            ))} */}
         </Column>
       </Row>
     </Container>

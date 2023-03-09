@@ -31,6 +31,8 @@ const defaultStyle = css`
   cursor: pointer;
   text-transform: uppercase;
   transition: all 0.2s;
+  border-radius: 5px;
+
   svg {
     margin-right: 7px;
   }
@@ -46,6 +48,7 @@ const LoadingButton = styled.div`
   border-color: #333;
   border-style: solid;
   border-bottom-color: #eee;
+  margin-right: 10px;
 `;
 
 interface StyledButtonProps {
@@ -59,30 +62,42 @@ interface StyledButtonProps {
 
 const CustomButton = styled.button<StyledButtonProps>`
   ${defaultStyle};
-  ${({ theme: { defaults } }) => css`
+  ${({ theme: { defaults, breakpoints } }) => css`
     padding: ${defaults.gutter / 1.5}rem ${defaults.gutter * 3}rem;
+    @media (max-width: ${breakpoints.md}px) {
+      padding: ${defaults.gutter / 1.2}rem ${defaults.gutter * 2}rem;
+    }
   `}
   ${(p) =>
     p.size === "small" &&
     css`
-      ${({ theme: { defaults } }) => css`
+      ${({ theme: { defaults, breakpoints } }) => css`
         font-size: 14px;
         padding: ${defaults.gutter / 2}rem ${defaults.gutter}rem;
+        @media (max-width: ${breakpoints.md}px) {
+          padding: ${defaults.gutter / 1.2}rem ${defaults.gutter * 2}rem;
+        }
       `}
     `}
   ${(p) =>
     p.size === "medium" &&
     css`
-      ${({ theme: { defaults } }) => css`
+      ${({ theme: { defaults, breakpoints } }) => css`
         padding: ${defaults.gutter / 1.5}rem ${defaults.gutter * 3}rem;
+        @media (max-width: ${breakpoints.md}px) {
+          padding: ${defaults.gutter / 1.2}rem ${defaults.gutter * 2}rem;
+        }
       `}
     `}
   ${(p) =>
     p.size === "large" &&
     css`
-      ${({ theme: { defaults } }) => css`
+      ${({ theme: { defaults, breakpoints } }) => css`
         font-size: 18px;
         padding: ${defaults.gutter / 1}rem ${defaults.gutter * 4}rem;
+        @media (max-width: ${breakpoints.md}px) {
+          padding: ${defaults.gutter / 1.2}rem ${defaults.gutter * 2}rem;
+        }
       `}
     `}
   ${(p) =>
@@ -171,7 +186,7 @@ const CustomButton = styled.button<StyledButtonProps>`
 `;
 
 type ButtonProps<T extends ElementType> = {
-  renderAs?: T | keyof JSX.IntrinsicElements;
+  as?: T | keyof JSX.IntrinsicElements;
   isLoading?: boolean;
   isCompleted?: boolean;
   disabled?: boolean;
@@ -182,7 +197,7 @@ type ButtonProps<T extends ElementType> = {
 } & ComponentPropsWithoutRef<T>;
 
 const Button = <T extends ElementType = "button">({
-  renderAs,
+  as,
   isLoading,
   isCompleted,
   variant,
@@ -194,7 +209,7 @@ const Button = <T extends ElementType = "button">({
 }: ButtonProps<T>): JSX.Element => {
   return (
     <CustomButton
-      as={renderAs}
+      as={as}
       isLoading={isLoading}
       variant={variant}
       size={size}
