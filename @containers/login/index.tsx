@@ -75,8 +75,8 @@ const Password = styled.div`
 `;
 
 const LoginSchema = Yup.object().shape({
-  userName: Yup.string().required("User name is required"),
-  password: Yup.string().required("Password is required"),
+  userName: Yup.string().required("Korisnicko ime je obavezno polje"),
+  password: Yup.string().required("Sifra je obavezno polje"),
 });
 
 interface Formvalues {
@@ -176,24 +176,12 @@ const index: FC = () => {
                 as="h4"
                 weight="semiBold"
                 padding={{
-                  xs: { bottom: 1 },
-                  sm: { bottom: 1 },
-                  md: { bottom: 1 },
+                  xs: { bottom: 2 },
+                  sm: { bottom: 2 },
+                  md: { bottom: 3 },
                 }}
               >
-                Welcome to Gradac Trade! 👋
-              </Heading>
-
-              <Heading
-                as="h6"
-                weight="medium"
-                padding={{
-                  xs: { bottom: 3 },
-                  sm: { bottom: 3 },
-                  md: { bottom: 4 },
-                }}
-              >
-                Please sign-in to your account and start the adventure
+                Dobro dosli na Gradac Trade aplikaciju! 👋
               </Heading>
 
               <AlertBox {...{ errorMessage }} />
@@ -247,11 +235,11 @@ const index: FC = () => {
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <Group>
-                      <Label>User name *</Label>
+                      <Label>Korisnicko ime *</Label>
                       <Field
                         type="text"
                         name="userName"
-                        placeholder="Enter your email or username"
+                        placeholder="Molim vas unesite vase korisnicko ime"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.userName}
@@ -263,7 +251,7 @@ const index: FC = () => {
                     </Group>
 
                     <Group>
-                      <Label>Password *</Label>
+                      <Label>Sifra *</Label>
 
                       <Password>
                         <Field
@@ -296,7 +284,7 @@ const index: FC = () => {
                       }}
                       isLoading={isSubmitting}
                     >
-                      {isSubmitting ? "Prijava..." : "Sign in"}
+                      {isSubmitting ? "Prijava..." : "Prijavite se"}
                     </Button>
                   </form>
                 )}
