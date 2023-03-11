@@ -67,7 +67,7 @@ const index: FC<Dashboard> = () => {
   // } = useContext(StoreContext);
 
   return (
-    <Grid $apiPath="customers" />
+    <Grid $apiPath="orders" $title="Sva trebovanja" />
 
     // <Formik
     //   autoComplete="off"

@@ -41,7 +41,7 @@ export const Field = styled.input<Field>`
   width: 100%;
 
   &:not([type="radio"]) {
-    ${({ halfSize, theme: { colors, font, defaults } }) => {
+    ${({ halfSize }) => {
       return css`
         ${halfSize
           ? css`

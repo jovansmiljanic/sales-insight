@@ -66,10 +66,6 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
       .sort({ createdAt: -1 })
       .count();
 
-    // Grab current user
-    // const customersData = await Customer.find({});
-
-    // Return the object
     // return res.send({ customersData });
     const customers = await Customer.find({
       ...getQuery(query),

@@ -20,7 +20,7 @@ const Animation = styled.div`
   background-size: 1200px 104px;
   position: relative;
   animation-timing-function: linear;
-  animation-duration: 1s;
+  animation-duration: 0.9s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   width: 100%;
@@ -30,99 +30,31 @@ const Animation = styled.div`
 
 const Item = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  ${({ theme: { breakpoints } }) => css`
-    @media (max-width: ${breakpoints.md}px) {
-      flex-direction: column;
-    }
-  `}
-`;
-
-const ImageWrap = styled.div`
-  flex: 0 0 50%;
-  min-width: 100px;
-  height: 310px;
-
-  ${({ theme: { breakpoints } }) => css`
-    @media (max-width: ${breakpoints.md}px) {
-      width: 100%;
-      flex: auto;
-    }
-  `}
-`;
-
-const Category = styled.div`
-  width: 110px;
-  height: 24px;
-`;
-
-const ContentWrap = styled.div`
-  display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+`;
+
+const TableItem = styled.div`
   width: 100%;
-  padding-left: 40px;
+  height: 55px;
 
-  ${({ theme: { breakpoints } }) => css`
-    @media (max-width: ${breakpoints.md}px) {
-      padding: 0;
-      padding-top: 20px;
+  ${({ theme: { colors } }) => css`
+    &:not(:last-child) {
+      border-bottom: 1px solid ${colors.lightGray};
     }
   `}
-`;
-
-const Title = styled.div`
-  width: 470px;
-  height: 70px;
-  margin: 15px 0;
-
-  ${({ theme: { breakpoints } }) => css`
-    @media (max-width: ${breakpoints.md}px) {
-      width: 80%;
-      margin: 5px 0;
-    }
-  `}
-`;
-
-const Description = styled.div`
-  width: 520px;
-  height: 70px;
-
-  ${({ theme: { breakpoints } }) => css`
-    @media (max-width: ${breakpoints.md}px) {
-      width: 100%;
-    }
-  `}
-`;
-
-const Button = styled.div`
-  width: 229px;
-  height: 47px;
-  margin-top: 20px;
 `;
 
 const index: FC = () => {
+  let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
   return (
     <Item>
-      <ImageWrap>
-        <Animation />
-      </ImageWrap>
-
-      <ContentWrap>
-        <Category>
+      {a.map((a) => (
+        <TableItem key={a}>
           <Animation />
-        </Category>
-        <Title>
-          <Animation />
-        </Title>
-        <Description>
-          <Animation />
-        </Description>
-        <Button>
-          <Animation />
-        </Button>
-      </ContentWrap>
+        </TableItem>
+      ))}
     </Item>
   );
 };

@@ -16,7 +16,7 @@ import { getSession } from "next-auth/react";
 
 interface ContentPageProps {
   orders: Order[];
-  session: Session;
+  session?: Session;
 }
 
 export default function Page({ orders, session }: ContentPageProps) {
@@ -24,7 +24,8 @@ export default function Page({ orders, session }: ContentPageProps) {
 
   return (
     <Layout title="Orders" session={session}>
-      <Orders {...{ orders }} />
+      {/* <Orders {...{ orders }} /> */}
+      orders
     </Layout>
   );
 }

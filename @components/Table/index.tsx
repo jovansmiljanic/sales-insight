@@ -19,6 +19,8 @@ import { Pagination } from "./Pagination";
 import axios from "axios";
 import styled, { css } from "styled-components";
 import { Column, Container, Row } from "@components/Grid";
+import { Heading } from "@components/Heading";
+import { Session } from "next-auth";
 
 interface IFilters {
   type?: string | string[];
@@ -101,9 +103,12 @@ export const GridContext = createContext({} as IGridContext);
 
 interface Grid {
   $apiPath: string;
+  $title: string;
+  $myOrders?: boolean;
+  $session?: Session;
 }
 
-const index: FC<Grid> = ({ $apiPath }) => {
+const index: FC<Grid> = ({ $apiPath, $title, $myOrders, $session }) => {
   const { query } = useRouter();
 
   // Declare filters
@@ -127,7 +132,7 @@ const index: FC<Grid> = ({ $apiPath }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Store the current limit of the pagination
-  const limit = 16;
+  const limit = 12;
 
   // Fetch items
   interface IFetch {
@@ -148,7 +153,15 @@ const index: FC<Grid> = ({ $apiPath }) => {
     const url = `/api/${$apiPath}/?${queryUrl}${searchUrl}&page=${page}&limit=${limit}&skip=${pageMemo}`;
 
     await axios.get(url).then(({ data: { items, length } }) => {
-      setUpdatedItems(items);
+      if ($myOrders) {
+        const myOrders = items.filter(
+          (item: any) => item.owner === $session?.user.userName
+        );
+
+        setUpdatedItems(myOrders);
+      } else {
+        setUpdatedItems(items);
+      }
 
       // Length
       setLength(length);
@@ -205,10 +218,30 @@ const index: FC<Grid> = ({ $apiPath }) => {
     >
       <Container>
         <Row>
-          <Column responsivity={{ md: 12 }}>
+          <Column
+            responsivity={{ md: 12 }}
+            padding={{
+              xs: { top: 4 },
+              sm: { top: 4 },
+              md: { top: 4 },
+            }}
+          >
             <Wrap>
               <Search />
             </Wrap>
+          </Column>
+
+          <Column
+            responsivity={{ md: 12 }}
+            padding={{
+              xs: { top: 4, bottom: 2 },
+              sm: { top: 4, bottom: 2 },
+              md: { top: 8, bottom: 4 },
+            }}
+          >
+            <Heading as="h4" weight="semiBold">
+              {$title}
+            </Heading>
           </Column>
 
           <Column responsivity={{ md: 12 }}>

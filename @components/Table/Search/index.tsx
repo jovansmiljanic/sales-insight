@@ -23,20 +23,21 @@ const SearchWrapper = styled.div`
 
   svg {
     position: absolute;
-    top: 67% !important;
-    left: 10px !important;
+    top: 62% !important;
+    left: 15px !important;
   }
 
   ${Field} {
     width: 100%;
-    border: 1px solid black;
-    min-height: 45px;
+    min-height: 55px;
+    border: 0;
+    box-shadow: 0 0 0.375rem 0.25rem rgb(161 172 184 / 15%);
+    border-radius: 5px;
   }
 
   ${({ theme: { defaults, breakpoints } }) => css`
     ${Field} {
-      padding-left: ${defaults.gutter * 2}px;
-      padding: 10px 20px 10px 40px;
+      padding: 10px 20px 10px 50px;
     }
 
     ${IconStyle} {
@@ -44,7 +45,7 @@ const SearchWrapper = styled.div`
       position: absolute;
       left: ${defaults.gutter / 2}px;
       top: 50%;
-      transform: translateY(-35%);
+      transform: translateY(-70%);
       z-index: 8;
     }
 
@@ -59,7 +60,7 @@ const Clear = styled.div`
   right: 20px;
   width: 25px;
   height: 25px;
-  top: 42%;
+  top: 20%;
   background-color: rgba(255, 255, 255, 0.123);
   display: flex;
   align-items: center;
@@ -101,10 +102,6 @@ const index: FC = () => {
   return (
     <SearchWrapper>
       <Icon $icon="search" $color="black" />
-
-      <Heading as="h6" weight="semiBold">
-        Search
-      </Heading>
 
       <Field
         id="search"

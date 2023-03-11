@@ -4,9 +4,6 @@ import { Layout } from "@components";
 // Global containers
 import { Dashboard, Login } from "@containers";
 
-// Global types
-import { Customer } from "@types";
-
 // Vendors
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
@@ -16,7 +13,6 @@ import type { Session } from "next-auth";
 
 interface ContentPageProps {
   session: Session;
-  items: Customer[];
 }
 
 export default function Page({ session }: ContentPageProps) {

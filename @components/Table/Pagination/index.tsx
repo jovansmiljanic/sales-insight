@@ -103,7 +103,7 @@ const index: FC = () => {
         disabled={!Boolean(page !== 0)}
         onClick={() => {
           // Change pagination index
-          push(`/?${queryUrl}${searchUrl}&page=${page - 1}`);
+          push(`?${queryUrl}${searchUrl}&page=${page - 1}`);
 
           scrollUp();
         }}
@@ -145,7 +145,7 @@ const index: FC = () => {
             isActive={el === page}
             key={el}
             onClick={() => {
-              push(`/?${queryUrl}&page=${el}${searchUrl}`);
+              push(`?${queryUrl}&page=${el}${searchUrl}`);
 
               scrollUp();
             }}
@@ -163,7 +163,7 @@ const index: FC = () => {
         }
         onClick={() => {
           // Change pagination index
-          push(`/?${queryUrl}${searchUrl}&page=${page + 1}`);
+          push(`?${queryUrl}${searchUrl}&page=${page + 1}`);
 
           scrollUp();
         }}
