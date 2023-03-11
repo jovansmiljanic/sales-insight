@@ -18,7 +18,7 @@ const TableWrapper = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
 
-  ${({ theme: { breakpoints } }) => css`
+  ${({ theme: { breakpoints, colors } }) => css`
     @media (max-width: ${breakpoints.md}px) {
       justify-content: center;
     }
@@ -67,9 +67,9 @@ const index: FC = () => {
     <TableWrapper>
       {!updatedItems && (
         <>
+          {/* <Placeholder />
           <Placeholder />
-          <Placeholder />
-          <Placeholder />
+          <Placeholder /> */}
         </>
       )}
 

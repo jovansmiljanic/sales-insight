@@ -18,6 +18,7 @@ import { Pagination } from "./Pagination";
 // Vendors
 import axios from "axios";
 import styled, { css } from "styled-components";
+import { Column, Container, Row } from "@components/Grid";
 
 interface IFilters {
   type?: string | string[];
@@ -39,44 +40,44 @@ const Wrap = styled.div`
   `}
 `;
 
-const Container = styled.div`
-  max-width: 1162px;
-  height: 100%;
-  width: 100%;
+// const Container = styled.div`
+//   max-width: 1162px;
+//   height: 100%;
+//   width: 100%;
 
-  margin-left: auto;
-  margin-right: auto;
+//   margin-left: auto;
+//   margin-right: auto;
 
-  ${({ theme: { defaults } }) => css`
-    padding-left: ${defaults.gutter}rem;
-    padding-right: ${defaults.gutter}rem;
-  `}
-`;
+//   ${({ theme: { defaults } }) => css`
+//     padding-left: ${defaults.gutter}rem;
+//     padding-right: ${defaults.gutter}rem;
+//   `}
+// `;
 
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+// const Row = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
 
-  flex: 1 1 0;
-  height: 100%;
+//   flex: 1 1 0;
+//   height: 100%;
 
-  ${({ theme: { defaults } }) => css`
-    margin-left: -${defaults.gutter}rem;
-    margin-right: -${defaults.gutter}rem;
-  `}
-`;
+//   ${({ theme: { defaults } }) => css`
+//     margin-left: -${defaults.gutter}rem;
+//     margin-right: -${defaults.gutter}rem;
+//   `}
+// `;
 
-const Column = styled.div`
-  flex: 0 0 100%;
+// const Column = styled.div`
+//   flex: 0 0 100%;
 
-  ${({ theme: { defaults, breakpoints } }) => css`
-    padding: ${defaults.gutter}rem;
+//   ${({ theme: { defaults, breakpoints } }) => css`
+//     padding: ${defaults.gutter}rem;
 
-    @media (max-width: ${breakpoints.md}px) {
-      flex: 0 0 100%;
-    }
-  `}
-`;
+//     @media (max-width: ${breakpoints.md}px) {
+//       flex: 0 0 100%;
+//     }
+//   `}
+// `;
 
 interface Checkbox {
   label: string;
@@ -204,17 +205,17 @@ const index: FC<Grid> = ({ $apiPath }) => {
     >
       <Container>
         <Row>
-          <Column>
+          <Column responsivity={{ md: 12 }}>
             <Wrap>
               <Search />
             </Wrap>
           </Column>
 
-          <Column>
+          <Column responsivity={{ md: 12 }}>
             <Table />
           </Column>
 
-          <Column>
+          <Column responsivity={{ md: 12 }}>
             <Pagination />
           </Column>
         </Row>

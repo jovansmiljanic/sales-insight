@@ -65,6 +65,8 @@ const Password = styled.div`
   position: relative;
 
   svg {
+    width: 20px;
+    height: 100%;
     position: absolute;
     top: 50%;
     right: 10px;

@@ -1,5 +1,5 @@
 // Core types
-import { type FC } from "react";
+import { useState, type FC } from "react";
 
 // NextJS
 import Head from "next/head";
@@ -16,7 +16,7 @@ import { Sidebar } from "./Sidebar";
 import { Heading } from "@components";
 
 // Vendors
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Session } from "next-auth";
 
 interface Layout {
@@ -28,41 +28,35 @@ interface Layout {
 const Layout = styled.div`
   position: relative;
   overflow: hidden;
+
+  ${({ theme: { colors } }) => css`
+    background-color: ${colors.background};
+  `}
 `;
 
-const Main = styled.div`
-  min-height: 80vh;
-  width: 100%;
+const Main = styled.div<{ sidebar: boolean }>`
+  padding-left: 100px;
+
+  ${({ sidebar }) => css`
+    ${sidebar &&
+    `
+     padding-left: 290px;
+  `}
+  `}
 `;
 
 const index: FC<Layout> = ({ title, children, session }) => {
+  const [sidebarOpened, setSidebarOpened] = useState(false);
+
   return (
     <Layout>
-      <Head>
-        <title>{`${title} - Gradac Trade`}</title>
-      </Head>
+      <Sidebar
+        session={session}
+        sidebarOpened={sidebarOpened}
+        setSidebarOpened={setSidebarOpened}
+      />
 
-      <Header />
-
-      <Container>
-        <Row>
-          <Column responsivity={{ md: 3 }}>
-            <Sidebar session={session} />
-          </Column>
-
-          <Column responsivity={{ md: 9 }}>
-            <Heading
-              as="h4"
-              weight="semiBold"
-              padding={{ md: { top: 8,bottom: 5, left: 2 }, sm: { bottom: 2 } }}
-            >
-              {title}
-            </Heading>
-
-            <Main>{children}</Main>
-          </Column>
-        </Row>
-      </Container>
+      <Main sidebar={sidebarOpened}>{children}</Main>
 
       <Footer />
     </Layout>

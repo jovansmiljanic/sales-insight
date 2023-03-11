@@ -23,7 +23,7 @@ export default function Page({ session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
-    <Layout title="Dodaj trebovanje" session={session}>
+    <Layout title="Sva trebovanja" session={session}>
       <Dashboard />
     </Layout>
   );
