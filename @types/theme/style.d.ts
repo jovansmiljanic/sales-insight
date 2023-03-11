@@ -53,5 +53,6 @@ export type Colors =
   | "primary"
   | "secondary"
   | "success"
+  | "iconColor"
   | "danger"
   | "textColor";

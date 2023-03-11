@@ -1,5 +1,8 @@
 // Core types
+import { Icon } from "@components/Icon";
 import { copyText } from "@utils/shared";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Fragment, useContext, type FC } from "react";
 
 // Vendors
@@ -66,6 +69,11 @@ const Tbody = styled.tbody`
     td {
       padding: 15px 10px;
 
+      svg {
+        cursor: pointer;
+        margin-right: 15px;
+      }
+
       &:nth-child(1) {
         width: 10%;
         cursor: pointer;
@@ -103,6 +111,8 @@ const index: FC = () => {
   // Grid context
   const { length, updatedItems, isLoading } = useContext(GridContext);
 
+  const router = useRouter();
+
   return (
     <TableWrapper>
       {!updatedItems || isLoading ? (
@@ -130,7 +140,13 @@ const index: FC = () => {
                       <td>{item.customer.name}</td>
                       <td>{item.customer.pib}</td>
                       <td>{item.owner}</td>
-                      <td>Delete/Edit</td>
+                      <td>
+                        <Link href={`/my-orders/${item._id}`}>
+                          <Icon $icon="preview" $color="iconColor" />
+                        </Link>
+                        <Icon $icon="edit" $color="iconColor" />
+                        <Icon $icon="trash" $color="iconColor" />
+                      </td>
                     </tr>
                   ) : (
                     <tr>
@@ -139,7 +155,9 @@ const index: FC = () => {
                       </td>
                       <td>{item.name}</td>
                       <td>{item.pib}</td>
-                      <td>Delete/Edit</td>
+                      <td>
+                        <Icon $icon="trash" />
+                      </td>
                     </tr>
                   )}
                 </Tbody>

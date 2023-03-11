@@ -21,11 +21,12 @@ const defaultTheme: ThemeType = {
     lightGray: "#d4d4d4",
     lighterGray: "#ededed",
     background: "#f5f5f9",
+    iconColor: "#5f6e7f",
   },
   font: {
     size: 16,
     baseSize: 20,
-    family: "'Montserrat', sans-serif",
+    family: "'Public Sans', sans-serif",
     weight: {
       light: 300,
       regular: 400,

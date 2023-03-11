@@ -34,7 +34,10 @@ export type TIconList =
   | "facebook"
   | "add"
   | "remove"
-  | "language";
+  | "language"
+  | "trash"
+  | "edit"
+  | "preview";
 
 export interface IIcon {
   $size?: 1 | 2 | 3;

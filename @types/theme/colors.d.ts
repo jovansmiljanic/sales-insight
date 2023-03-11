@@ -12,5 +12,6 @@ export type Colors =
   | "gray"
   | "darkGray"
   | "lightBlue"
+  | "iconColor"
   | "background"
   | "blue";

@@ -2,13 +2,13 @@
 import styled, { css } from "styled-components";
 
 // Global types
-import type { IIcon } from "@types";
+import type { Colors, IIcon } from "@types";
 
 export const Icon = styled.svg<IIcon>`
   // Manage icon color
   ${({ $color = "textColor", theme: { colors } }) =>
     css`
-      fill: ${colors.textColor};
+      fill: ${colors[$color as Colors]};
     `}
 
   // Manage icon size
@@ -16,15 +16,16 @@ export const Icon = styled.svg<IIcon>`
     switch ($size) {
       case 1:
         return css`
-          width: 24px;
+          width: 18px;
+          height: 18px;
         `;
       case 2:
         return css`
-          width: 30px;
+          width: 24px;
         `;
       case 3:
         return css`
-          width: 50px;
+          width: 30px;
         `;
     }
   }}
