@@ -8,7 +8,7 @@ import { Layout } from "@components";
 import { Order as Ordertype } from "@types";
 
 // Global containers
-import { Login, Order, OrderPreview } from "@containers";
+import { Login, OrderPreview } from "@containers";
 
 // Vendors
 import { Session } from "next-auth";

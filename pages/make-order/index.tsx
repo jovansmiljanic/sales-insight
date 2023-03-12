@@ -2,7 +2,7 @@
 import { Layout } from "@components";
 
 // Global containers
-import { Order, Login } from "@containers";
+import { MakeOrder, Login } from "@containers";
 
 // Global types
 import { Article, Customer } from "@types";
@@ -29,7 +29,7 @@ export default function Page({
 
   return (
     <Layout title="Dashboard" session={session}>
-      <Order {...{ articlesData }} {...{ customersData }} />
+      <MakeOrder {...{ articlesData }} {...{ customersData }} />
     </Layout>
   );
 }

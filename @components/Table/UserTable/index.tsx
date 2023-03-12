@@ -18,8 +18,8 @@ import { Placeholder } from "../Placeholder";
 import { useRouter } from "next/router";
 import axios, { AxiosResponse } from "axios";
 import { deleteItem } from "@utils/client";
-import { AddUser } from "@containers";
 import { Filters } from "../Filters";
+import { AddUser } from "@containers/users/add-user";
 
 const TableWrapper = styled.div`
   border-radius: 10px;

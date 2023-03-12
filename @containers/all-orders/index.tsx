@@ -8,4 +8,4 @@ const index: FC = () => {
   return <Grid $apiPath="orders" $title="Sva trebovanja" $orders={true} />;
 };
 
-export { index as Orders };
+export { index as AllOrders };

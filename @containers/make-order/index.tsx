@@ -149,4 +149,4 @@ const index: FC<Dashboard> = ({ customersData, articlesData }) => {
   );
 };
 
-export { index as Order };
+export { index as MakeOrder };
