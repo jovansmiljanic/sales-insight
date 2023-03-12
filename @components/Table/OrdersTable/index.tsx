@@ -142,14 +142,17 @@ const index: FC = () => {
                     <td>{item.customer.pib}</td>
                     <td>{item.owner}</td>
                     <td>
-                      <Link href={`/my-orders/${item._id}`}>
-                        <Icon $icon="preview" $color="iconColor" />
-                      </Link>
+                      <Icon
+                        $icon="preview"
+                        $color="iconColor"
+                        onClick={() => router.push(`/my-orders/${item._id}`)}
+                      />
+
                       <Icon $icon="edit" $color="iconColor" />
                       <Icon
                         $icon="trash"
                         $color="iconColor"
-                        onClick={() => deleteItem(item._id, router)}
+                        onClick={() => deleteItem(item._id, router, "orders")}
                       />
                     </td>
                   </tr>

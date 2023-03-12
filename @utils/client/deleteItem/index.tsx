@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 
-export const deleteItem = async (id: any, router: any) => {
+export const deleteItem = async (id: any, router: any, path: string) => {
   await axios({
     method: "DELETE",
-    url: "/api/orders",
+    url: `/api/${path}`,
     data: id,
   })
     .then((res: AxiosResponse) => {

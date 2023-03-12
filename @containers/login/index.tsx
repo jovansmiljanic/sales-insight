@@ -71,6 +71,7 @@ const Password = styled.div`
     top: 50%;
     right: 10px;
     transform: translate(0, -50%);
+    cursor: pointer;
   }
 `;
 
@@ -266,6 +267,7 @@ const index: FC = () => {
                         <Icon
                           onClick={() => setVisiblePassword(!visiblePassword)}
                           $icon="toggle-eye"
+                          $toggled={visiblePassword}
                         />
                       </Password>
 

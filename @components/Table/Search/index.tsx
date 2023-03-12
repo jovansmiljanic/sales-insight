@@ -87,7 +87,7 @@ const index: FC = () => {
     // Delay search on 1.5 seconds on typing
     if (searchQuery !== undefined) {
       delayDebounceFn = setTimeout(() => {
-        push(`/?${queryUrl}${searchUrl}&page=${0}`);
+        push(`?${queryUrl}${searchUrl}&page=${0}`);
       }, 300);
     }
 
@@ -117,7 +117,7 @@ const index: FC = () => {
             // Clear the search query
             setSearchQuery("");
 
-            push(`/?${queryUrl}${searchUrl}&page=${0}`);
+            push(`?${queryUrl}${searchUrl}&page=${0}`);
           }}
         >
           <svg

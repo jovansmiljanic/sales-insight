@@ -1,6 +1,7 @@
-export { Dashboard } from "./dashboard";
-export { Login } from "./login";
-export { Orders } from "./orders";
 export { Order } from "./order";
+export { Login } from "./login";
+export { MyOrders } from "./my-orders";
+export { Orders } from "./orders";
+export { OrderPreview } from "./order-preview";
 export { Users } from "./users";
-export { AddUser } from "./add-user";
+export { AddUser } from "./users/add-user";

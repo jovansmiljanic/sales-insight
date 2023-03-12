@@ -40,20 +40,16 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
             case "searchQuery":
               return {
                 ...p,
-                name: val
+                fullName: val
                   ? {
                       $regex: new RegExp(val.toString(), "i"),
                     }
                   : "",
               };
 
-            case "type":
-              const types = val?.toString().split(",");
-              return { ...p, [key]: types?.map((type) => type) };
-
-            case "topic":
-              const topics = val?.toString().split(",");
-              return { ...p, [key]: topics?.map((topic) => topic) };
+            case "role":
+              const role = val?.toString().split(",");
+              return { ...p, [key]: role?.map((role) => role) };
 
             default:
               return { ...p, [key]: val };
@@ -84,7 +80,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   // Process a POST request
   if (method === "POST") {
     const {
-      body: { fullName, userName, password },
+      body: { fullName, email, userName, password },
     } = req;
 
     const isUserNameTaken = Boolean(await User.findOne({ userName }));
@@ -96,12 +92,10 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const encryptedPassword = await bcrypt.hash(password, 8);
 
-    const [firstName, lastName] = fullName.split(" ");
-
     // Create user model object
     const user = new User({
-      firstName,
-      lastName,
+      fullName,
+      email,
       userName,
       password: encryptedPassword,
       role: 2,

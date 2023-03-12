@@ -125,7 +125,7 @@ const index: FC<Sidebar> = ({ session, sidebarOpened, setSidebarOpened }) => {
       ),
     },
     {
-      path: "/trebovanje",
+      path: "/make-order",
       label: "Novo trbovanje",
       role: [1, 2],
       icon: (

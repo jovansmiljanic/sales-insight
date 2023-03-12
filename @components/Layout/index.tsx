@@ -35,6 +35,7 @@ const Layout = styled.div`
 `;
 
 const Main = styled.div<{ sidebar: boolean }>`
+  min-height: 95vh;
   padding-left: 100px;
 
   ${({ sidebar }) => css`

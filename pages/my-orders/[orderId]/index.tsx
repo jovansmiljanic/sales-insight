@@ -8,7 +8,7 @@ import { Layout } from "@components";
 import { Order as Ordertype } from "@types";
 
 // Global containers
-import { Login, Order } from "@containers";
+import { Login, Order, OrderPreview } from "@containers";
 
 // Vendors
 import { Session } from "next-auth";
@@ -24,7 +24,7 @@ export default function Page({ order, session }: ContentPageProps) {
 
   return (
     <Layout title={`Trebovanje: ${order._id}`} session={session}>
-      <Order {...{ order }} />
+      <OrderPreview {...{ order }} />
     </Layout>
   );
 }

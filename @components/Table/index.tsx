@@ -26,9 +26,10 @@ import { Heading } from "@components";
 // Vendors
 import axios from "axios";
 import styled, { css } from "styled-components";
+import { Filters } from "./Filters";
 
 interface IFilters {
-  type?: string | string[];
+  role?: string | string[];
 }
 
 interface Filter {
@@ -109,6 +110,9 @@ const index: FC<Grid> = ({
   // Store the current limit of the pagination
   const limit = 12;
 
+  // Set selected value
+  const [rolesSelected, setRolesSelected] = useState<Checkbox[] | undefined>();
+
   // Fetch items
   interface IFetch {
     page: number;
@@ -153,6 +157,16 @@ const index: FC<Grid> = ({
     if (!isObjectEmpty(rest)) setFilters(rest);
     if (isObjectEmpty(rest)) setFilters({});
 
+    const roles = rest.role
+      ?.toString()
+      .split(",")
+      .map((role) => {
+        return { value: role, label: role };
+      });
+
+    if (rest.role) setRolesSelected(roles);
+    if (!rest.role) setRolesSelected([]);
+
     // Update page number
     if (queryPage) setPage(Math.round(Number(queryPage.toString())));
     else setPage(0);
@@ -176,6 +190,8 @@ const index: FC<Grid> = ({
     [pageMemo],
     50
   );
+
+  const router = useRouter();
 
   return (
     <GridContext.Provider
@@ -220,7 +236,13 @@ const index: FC<Grid> = ({
           </Column>
 
           <Column responsivity={{ md: 12 }}>
-            {$users && <UserTable />}
+            {$users && (
+              <UserTable
+                role={rolesSelected}
+                query={query}
+                searchUrl={searchUrl}
+              />
+            )}
 
             {($orders || $myOrders) && <OrdersTable />}
           </Column>

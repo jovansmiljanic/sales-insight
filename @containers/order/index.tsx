@@ -1,265 +1,151 @@
 // Core types
-import { FC } from "react";
+import type { FC } from "react";
 
-// Global components
-import { Heading } from "@components";
+// Core
+import { useContext } from "react";
 
-// Global grid components
+// GLobal grid components
 import { Column, Container, Row } from "@components/Grid";
 
-// Global types
-import { Order } from "@types";
+// Global components
+import { Button } from "@components";
+
+// Local components
+import { Table } from "./Table";
+import { Articles } from "./Articles";
+import { Customer } from "./Customer";
 
 // Vendors
-import styled, { css } from "styled-components";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import axios, { AxiosResponse } from "axios";
 
-interface Orders {
-  order: Order;
+// Global types
+import { Article as Articletype, Customer as Customertype } from "@types";
+import { Grid } from "@components/Table";
+// import { Grid } from "./Grid";
+
+// Store context
+import { StoreContext } from "@context";
+
+// Client utils
+import { resetOrder } from "@utils/client";
+
+interface Formvalues {
+  customer: { customerId: string; name: string; pib: string };
+  articles: [{ name: string; quantity: string; price: string }];
+  address: string;
+  valuta: string;
 }
 
-const Wrapper = styled.div`
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+const OrderSchema = Yup.object().shape({
+  customer: Yup.object(),
+  articles: Yup.array(),
+  address: Yup.string(),
+  valuta: Yup.string(),
+});
 
-  ${({ theme: { colors } }) => css`
-    color: ${colors.iconColor};
-    background-color: ${colors.white};
-  `}
-`;
+interface Dashboard {
+  articlesData: Articletype[];
+  customersData: Customertype[];
+}
 
-const CompanyDetails = styled.div`
-  display: flex;
-  padding-bottom: 20px;
-
-  ${({ theme: { colors } }) => css`
-    border-bottom: 1px solid ${colors.lightGray};
-  `}
-`;
-
-const CustomerDetails = styled.div`
-  display: flex;
-  padding: 20px 0;
-
-  ${({ theme: { colors } }) => css`
-    border-bottom: 1px solid ${colors.lightGray};
-  `}
-`;
-
-const Col1 = styled.div`
-  flex: 0 0 80%;
-`;
-
-const Col2 = styled.div``;
-
-const ItemsDetails = styled.div``;
-
-const Table = styled.table`
-  width: 100%;
-`;
-
-const Thead = styled.thead`
-  font-size: 14px;
-
-  ${({ theme: { colors, font } }) => css`
-    font-weight: ${font.weight.semiBold};
-    border-bottom: 1px solid ${colors.lightGray};
-  `}
-
-  td {
-    padding: 5px 10px;
-
-    &:nth-child(1) {
-      width: 40%;
-    }
-
-    &:nth-child(2) {
-      width: 20%;
-    }
-
-    &:nth-child(3) {
-      width: 20%;
-    }
-
-    &:nth-child(3) {
-      width: 20%;
-    }
-  }
-`;
-
-const Tbody = styled.tbody`
-  ${({ theme: { colors } }) => css`
-    td {
-      border-bottom: 1px solid ${colors.lightGray};
-
-      padding: 10px;
-
-      &:nth-child(1) {
-        width: 40%;
-      }
-
-      &:nth-child(2) {
-        width: 20%;
-      }
-
-      &:nth-child(3) {
-        width: 20%;
-      }
-
-      &:nth-child(3) {
-        width: 20%;
-      }
-    }
-  `}
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding: 20px 0;
-  padding-top: 40px;
-`;
-
-const FooterItem = styled.div`
-  display: flex;
-  width: 290px;
-
-  h6 {
-    flex: 0 0 39%;
-  }
-
-  span {
-    flex: 0 0 30%;
-  }
-`;
-
-const index: FC<Orders> = ({ order }) => {
-  // Get and format date from createAt prop
-  const orderDate = new Date(order.createdAt);
-  const day = orderDate.getDate();
-  const month = orderDate.getMonth();
-  const year = orderDate.getFullYear();
-
-  const total = order.articles
-    .map((article) => +article.price * +article.quantity)
-    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-  const tax = 70;
+const index: FC<Dashboard> = ({ customersData, articlesData }) => {
+  const {
+    customer,
+    articles,
+    address,
+    valuta,
+    isActive,
+    setCustomer,
+    setArticles,
+    setAddress,
+    setValuta,
+    setCustomerName,
+    setIsActive,
+    setResult,
+  } = useContext(StoreContext);
 
   return (
-    <Container>
-      <Row
-        padding={{ md: { top: 10, bottom: 10 } }}
-        justifyContent={{ md: "center" }}
-      >
-        <Column responsivity={{ md: 9 }}>
-          <Wrapper>
-            <CompanyDetails>
-              <Col1>
-                <Heading
-                  as="h5"
-                  weight="semiBold"
-                  padding={{ md: { bottom: 1 } }}
-                >
-                  GRADAC TRADE
-                </Heading>
-                <Heading as="p">Vukašina Ignjatovića 14/2</Heading>
-                <Heading as="p">+1 (123) 456 7891</Heading>
-              </Col1>
+    <Formik
+      autoComplete="off"
+      initialValues={{
+        customer: { customerId: "", name: "", pib: "" },
+        articles: [{ name: "", quantity: "", price: "" }],
+        address: "",
+        valuta: "",
+      }}
+      validationSchema={OrderSchema}
+      onSubmit={async (data: Formvalues) => {
+        await axios({
+          method: "POST",
+          url: "/api/orders",
+          data: {
+            customer,
+            articles,
+            address,
+            valuta,
+          },
+        })
+          .then((res: AxiosResponse) => {
+            setCustomer("");
+            setArticles([]);
+            setAddress("");
+            setValuta("");
+            setResult([]), setCustomerName("");
+            setIsActive(!isActive);
+          })
+          .catch((err) => {
+            // Set error message
+            console.log(err);
+          });
+      }}
+    >
+      {({ handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <Container>
+            <Row>
+              <Column responsivity={{ md: 12 }}>
+                <Customer customersData={customersData} />
+                <Articles articlesData={articlesData} />
+              </Column>
+            </Row>
 
-              <Col2>
-                <Heading
-                  as="h5"
-                  weight="semiBold"
-                  padding={{ md: { bottom: 1 } }}
-                >
-                  Racun: #321
-                </Heading>
-                <Heading as="p">
-                  Datum izadaje: {day}.{month + 1}.{year}.
-                </Heading>
-              </Col2>
-            </CompanyDetails>
+            {!customer && !articles ? (
+              <></>
+            ) : (
+              <Row>
+                <Column responsivity={{ md: 12 }}>
+                  <Table
+                    customer={customer}
+                    valuta={valuta}
+                    address={address}
+                    article={articles}
+                  />
+                </Column>
+              </Row>
+            )}
 
-            <CustomerDetails>
-              <Col1>
-                <Heading
-                  as="h5"
-                  weight="semiBold"
-                  padding={{ md: { bottom: 1 } }}
-                >
-                  Invoice To:
-                </Heading>
+            <Button
+              variant="danger"
+              type="button"
+              margin={{ md: { top: 1, right: 1 }, sm: { top: 1, right: 1 } }}
+              onClick={() => resetOrder()}
+            >
+              Resetuj
+            </Button>
 
-                <Heading as="p">{order.customer.name}</Heading>
-                <Heading as="p">{order.address}</Heading>
-                <Heading as="p">{order.customer.pib}</Heading>
-              </Col1>
-
-              <Col2>
-                <Heading
-                  as="h5"
-                  weight="semiBold"
-                  padding={{ md: { bottom: 1 } }}
-                >
-                  Bill To:
-                </Heading>
-
-                <Heading as="p">Total Due: {total}</Heading>
-              </Col2>
-            </CustomerDetails>
-
-            <ItemsDetails>
-              <Table>
-                <Thead>
-                  <tr>
-                    <td>Name</td>
-                    <td>Qty</td>
-                    <td>Price</td>
-                    <td>Total</td>
-                  </tr>
-                </Thead>
-
-                <Tbody>
-                  {order.articles.map((article) => (
-                    <tr>
-                      <td>{article.name}</td>
-                      <td>{article.quantity}</td>
-                      <td>{article.price} din</td>
-                      <td>{+article.price * +article.quantity} din</td>
-                    </tr>
-                  ))}
-                </Tbody>
-              </Table>
-
-              <Footer>
-                <FooterItem>
-                  <Heading as="h6">Subtotal:</Heading>
-                  <span>{total} din</span>
-                </FooterItem>
-
-                <FooterItem>
-                  <Heading as="h6">Discount:</Heading>
-                  <span>0,00 din</span>
-                </FooterItem>
-
-                <FooterItem>
-                  <Heading as="h6">Tax:</Heading>
-                  <span>{tax} din</span>
-                </FooterItem>
-
-                <FooterItem>
-                  <Heading as="h6">Total:</Heading>
-                  <span>{total + tax} din</span>
-                </FooterItem>
-              </Footer>
-            </ItemsDetails>
-          </Wrapper>
-        </Column>
-      </Row>
-    </Container>
+            <Button
+              variant="primary"
+              type="submit"
+              margin={{ md: { top: 1 }, sm: { top: 1 } }}
+            >
+              Zavrsi
+            </Button>
+          </Container>
+        </form>
+      )}
+    </Formik>
   );
 };
 

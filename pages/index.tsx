@@ -2,7 +2,7 @@
 import { Layout } from "@components";
 
 // Global containers
-import { Dashboard, Login } from "@containers";
+import { Login, Orders } from "@containers";
 
 // Vendors
 import { GetServerSideProps } from "next";
@@ -20,7 +20,7 @@ export default function Page({ session }: ContentPageProps) {
 
   return (
     <Layout title="Sva trebovanja" session={session}>
-      <Dashboard />
+      <Orders />
     </Layout>
   );
 }
