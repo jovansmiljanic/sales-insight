@@ -2,6 +2,7 @@
 import { type FC, createContext, useEffect, useState, useMemo } from "react";
 
 // NextJS
+import { Session } from "next-auth";
 import { useRouter } from "next/router";
 
 // Shared utils
@@ -11,16 +12,20 @@ import { isObjectEmpty, objectToQuery } from "@utils/shared";
 import { useDebouncedEffect } from "@utils/client";
 
 // Local components
-import { Table } from "./Table";
 import { Search } from "./Search";
+import { UserTable } from "./UserTable";
 import { Pagination } from "./Pagination";
+import { OrdersTable } from "./OrdersTable";
+
+// Global grid components
+import { Column, Container, Row } from "@components/Grid";
+
+// Global components
+import { Heading } from "@components";
 
 // Vendors
 import axios from "axios";
 import styled, { css } from "styled-components";
-import { Column, Container, Row } from "@components/Grid";
-import { Heading } from "@components/Heading";
-import { Session } from "next-auth";
 
 interface IFilters {
   type?: string | string[];
@@ -41,45 +46,6 @@ const Wrap = styled.div`
     color: ${colors.textColor};
   `}
 `;
-
-// const Container = styled.div`
-//   max-width: 1162px;
-//   height: 100%;
-//   width: 100%;
-
-//   margin-left: auto;
-//   margin-right: auto;
-
-//   ${({ theme: { defaults } }) => css`
-//     padding-left: ${defaults.gutter}rem;
-//     padding-right: ${defaults.gutter}rem;
-//   `}
-// `;
-
-// const Row = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-
-//   flex: 1 1 0;
-//   height: 100%;
-
-//   ${({ theme: { defaults } }) => css`
-//     margin-left: -${defaults.gutter}rem;
-//     margin-right: -${defaults.gutter}rem;
-//   `}
-// `;
-
-// const Column = styled.div`
-//   flex: 0 0 100%;
-
-//   ${({ theme: { defaults, breakpoints } }) => css`
-//     padding: ${defaults.gutter}rem;
-
-//     @media (max-width: ${breakpoints.md}px) {
-//       flex: 0 0 100%;
-//     }
-//   `}
-// `;
 
 interface Checkbox {
   label: string;
@@ -104,11 +70,20 @@ export const GridContext = createContext({} as IGridContext);
 interface Grid {
   $apiPath: string;
   $title: string;
+  $users?: boolean;
+  $orders?: boolean;
   $myOrders?: boolean;
   $session?: Session;
 }
 
-const index: FC<Grid> = ({ $apiPath, $title, $myOrders, $session }) => {
+const index: FC<Grid> = ({
+  $apiPath,
+  $title,
+  $orders,
+  $users,
+  $myOrders,
+  $session,
+}) => {
   const { query } = useRouter();
 
   // Declare filters
@@ -245,7 +220,9 @@ const index: FC<Grid> = ({ $apiPath, $title, $myOrders, $session }) => {
           </Column>
 
           <Column responsivity={{ md: 12 }}>
-            <Table />
+            {$users && <UserTable />}
+
+            {($orders || $myOrders) && <OrdersTable />}
           </Column>
 
           <Column responsivity={{ md: 12 }}>

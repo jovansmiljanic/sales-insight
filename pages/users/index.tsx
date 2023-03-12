@@ -15,16 +15,15 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 
 interface ContentPageProps {
-  users: User[];
   session: Session;
 }
 
-export default function Page({ users, session }: ContentPageProps) {
+export default function Page({ session }: ContentPageProps) {
   if (!session) return <Login />;
 
   return (
     <Layout title="Komercijalisti" session={session}>
-      <Users {...{ users }} />
+      <Users />
     </Layout>
   );
 }
@@ -33,10 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // Check session
   const session = await getSession(ctx);
 
-  const userResult = await fetch(`${process.env.NEXTAUTH_URL}/api/users`);
-  const { users } = await userResult.json();
-
   return {
-    props: { users, session },
+    props: { session },
   };
 };

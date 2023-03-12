@@ -1,9 +1,11 @@
-// Core types
-import { Icon } from "@components/Icon";
+// Core
+import { useContext, type FC } from "react";
+
+// Global components
+import { Button, Icon } from "@components";
+
+// Shared utils
 import { copyText } from "@utils/shared";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Fragment, useContext, type FC } from "react";
 
 // Vendors
 import styled, { css } from "styled-components";
@@ -12,11 +14,18 @@ import styled, { css } from "styled-components";
 import { GridContext } from "..";
 
 // Local component
-import { Placeholder } from "./Placeholder";
+import { Placeholder } from "../Placeholder";
+import { useRouter } from "next/router";
+import axios, { AxiosResponse } from "axios";
+import { deleteItem } from "@utils/client";
 
 const TableWrapper = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
 
   ${({ theme: { colors } }) => css`
     background-color: ${colors.white};
@@ -39,15 +48,15 @@ const Thead = styled.thead`
     padding: 15px 10px;
 
     &:nth-child(1) {
-      width: 8%;
+      width: 10%;
     }
 
     &:nth-child(2) {
-      width: 40%;
+      width: 15%;
     }
 
     &:nth-child(3) {
-      width: 20%;
+      width: 25%;
     }
 
     &:nth-child(4) {
@@ -55,6 +64,10 @@ const Thead = styled.thead`
     }
 
     &:nth-child(5) {
+      width: 20%;
+    }
+
+    &:nth-child(6) {
       width: 10%;
     }
   }
@@ -81,11 +94,11 @@ const Tbody = styled.tbody`
       }
 
       &:nth-child(2) {
-        width: 40%;
+        width: 15%;
       }
 
       &:nth-child(3) {
-        width: 20%;
+        width: 25%;
       }
 
       &:nth-child(4) {
@@ -93,6 +106,10 @@ const Tbody = styled.tbody`
       }
 
       &:nth-child(5) {
+        width: 20%;
+      }
+
+      &:nth-child(6) {
         width: 10%;
       }
     }
@@ -119,47 +136,43 @@ const index: FC = () => {
         <Placeholder />
       ) : (
         <>
+          <Button
+            margin={{ md: { top: 2, bottom: 2, right: 2 } }}
+            variant="primary"
+          >
+            Add user
+          </Button>
           <Table>
             <Thead>
               <tr>
                 <td>#ID</td>
-                <td>Kupac</td>
-                <td>PIB</td>
-                <td>Komercijalista</td>
+                <td>Ime</td>
+                <td>Email</td>
+                <td>Korisnicko ime</td>
+                <td>Role</td>
                 <td>Akcije</td>
               </tr>
             </Thead>
             {Array.isArray(updatedItems) &&
               updatedItems.map((item, i) => (
                 <Tbody key={i}>
-                  {item.customer ? (
-                    <tr>
-                      <td onClick={() => copyText(item.customer.customerId)}>
-                        #{item.customer.customerId}
-                      </td>
-                      <td>{item.customer.name}</td>
-                      <td>{item.customer.pib}</td>
-                      <td>{item.owner}</td>
-                      <td>
-                        <Link href={`/my-orders/${item._id}`}>
-                          <Icon $icon="preview" $color="iconColor" />
-                        </Link>
-                        <Icon $icon="edit" $color="iconColor" />
-                        <Icon $icon="trash" $color="iconColor" />
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr>
-                      <td onClick={() => copyText(item.customerId)}>
-                        #{item.customerId}
-                      </td>
-                      <td>{item.name}</td>
-                      <td>{item.pib}</td>
-                      <td>
-                        <Icon $icon="trash" />
-                      </td>
-                    </tr>
-                  )}
+                  <tr>
+                    <td onClick={() => copyText(item._id)}>
+                      #{item._id.slice(0, 5)}
+                    </td>
+                    <td>{item.fullName}</td>
+                    <td>{item.email}</td>
+                    <td>{item.userName}</td>
+                    <td>{item.role}</td>
+                    <td>
+                      <Icon
+                        $icon="trash"
+                        $color="iconColor"
+                        onClick={() => deleteItem(item._id, router)}
+                      />
+                      <Icon $icon="edit" $color="iconColor" />
+                    </td>
+                  </tr>
                 </Tbody>
               ))}
           </Table>
@@ -173,4 +186,4 @@ const index: FC = () => {
   );
 };
 
-export { index as Table };
+export { index as UserTable };
