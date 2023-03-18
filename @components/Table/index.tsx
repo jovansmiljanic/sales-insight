@@ -137,13 +137,18 @@ const index: FC<Grid> = ({
           (item: any) => item.owner === $session?.user.userName
         );
 
+        // Length
+        setLength(myOrders.length);
+
+        // Fetched Items
         setUpdatedItems(myOrders);
       } else {
+        // Length
+
+        setLength(length);
+        // Fetched Items
         setUpdatedItems(items);
       }
-
-      // Length
-      setLength(length);
 
       // Set loader
       setIsLoading(false);

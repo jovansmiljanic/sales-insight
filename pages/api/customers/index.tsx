@@ -23,11 +23,55 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Process a GET request
   if (method === "GET") {
-    // Grab current user
-    const customersData = await Customer.find({});
+    const {
+      query: { limit, skip, ...query },
+    } = req;
+
+    // Restructure query based on Collection schema
+    const getQuery = (query: {
+      [x: string]: string | string[] | undefined;
+    }) => {
+      return Object.entries(query).reduce(
+        (p, [key, val]) => {
+          switch (key) {
+            case "searchQuery":
+              return {
+                ...p,
+                fullName: val
+                  ? {
+                      $regex: new RegExp(val.toString(), "i"),
+                    }
+                  : "",
+              };
+
+            case "role":
+              const role = val?.toString().split(",");
+              return { ...p, [key]: role?.map((role) => role) };
+
+            default:
+              return { ...p, [key]: val };
+          }
+        },
+        {} // Start
+      );
+    };
+
+    const length = await Customer.find({
+      ...getQuery(query),
+    })
+      .sort({ createdAt: -1 })
+      .count();
+
+    // return res.send({ customersData });
+    const customer = await Customer.find({
+      ...getQuery(query),
+    })
+      .skip(Number(skip) * Number(limit))
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
 
     // Return the object
-    return res.send({ customersData });
+    return res.send({ items: customer, length });
   }
 
   // Process a POST request

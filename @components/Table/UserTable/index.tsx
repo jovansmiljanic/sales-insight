@@ -176,7 +176,7 @@ const index: FC<UserTable> = ({ role, query, searchUrl }) => {
             <FiltersWrap>
               <Filters
                 name="role"
-                label="Role"
+                label="role"
                 preSelected={role}
                 options={[
                   { label: "Administrator", value: "1" },
