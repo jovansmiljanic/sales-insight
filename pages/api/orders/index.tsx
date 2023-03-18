@@ -37,7 +37,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
             case "searchQuery":
               return {
                 ...p,
-                name: val
+                "customer.name": val
                   ? {
                       $regex: new RegExp(val.toString(), "i"),
                     }

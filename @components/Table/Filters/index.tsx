@@ -12,7 +12,7 @@ import { Icon, Heading } from "@components";
 
 // Dropdown container
 const Container = styled.div`
-  width: 260px;
+  width: 100%;
   padding-bottom: 14px;
   position: absolute;
   top: 100%;
@@ -85,8 +85,8 @@ const Item: FC<Item> = ({ label, value, setSelected, selected }) => {
   return (
     <Checkbox
       onClick={() => {
-        if (selected && selected.find(i => i.value === value)) {
-          setSelected(selected.filter(i => i.value !== value));
+        if (selected && selected.find((i) => i.value === value)) {
+          setSelected(selected.filter((i) => i.value !== value));
         } else {
           if (selected) {
             setSelected([{ value, label }, ...selected]);
@@ -97,7 +97,7 @@ const Item: FC<Item> = ({ label, value, setSelected, selected }) => {
       }}
     >
       <Check
-        active={Boolean(selected && selected.find(i => i.value === value))}
+        active={Boolean(selected && selected.find((i) => i.value === value))}
       />
       {label}
     </Checkbox>
@@ -176,10 +176,6 @@ const index: FC<Filter> = ({ label, options, callback, preSelected }) => {
   return (
     <>
       <Filter ref={accountDropdownRef}>
-        <Heading as="h6" weight="semiBold">
-          {label}
-        </Heading>
-
         <Label
           onClick={() => setDropdown(!isDropdownActive)}
           active={Boolean(selected && selected?.length >= 1)}
@@ -187,7 +183,7 @@ const index: FC<Filter> = ({ label, options, callback, preSelected }) => {
           <span>
             {selected && selected.length >= 1
               ? `Selected ${preSelected?.length}`
-              : "Please select"}
+              : `Please select ${label}`}
           </span>
 
           <Icon
