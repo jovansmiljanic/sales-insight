@@ -1,22 +1,16 @@
 // Vendors
-import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 // Vendor types
 import type { NextAuthOptions } from "next-auth";
 
-// Global utilities @server-only
-import { database } from "@utils/server";
-
-// Database models
-import { User } from "@models";
-
 // Types
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // Global types
 import type { User as UserType } from "@types";
+import axios from "axios";
 
 interface Configuration {
   res: NextApiResponse;
@@ -27,40 +21,38 @@ const nextAuthOptions = ({ res }: Configuration): NextAuthOptions => {
     // https://next-auth.js.org/configuration/providers
     providers: [
       Credentials({
-        name: "SignIn",
+        id: "Login",
+        name: "Login",
         credentials: {
           userName: { label: "User name", type: "text" },
           password: { label: "Password", type: "password" },
         },
 
-        authorize: async (credentials: any) => {
-          // Grab user name and password from the submitted form
-          const { userName, password } = credentials;
+        authorize: async (credentials, req) => {
+          try {
+            // Grab user name and password from the submitted form
+            const { userName, password } = credentials as {
+              userName: string;
+              password: string;
+            };
 
-          // Connect to mongoDb database
-          await database();
+            const response = await axios.post(
+              "http://localhost:8000/api/v1/auth",
+              {
+                username: userName,
+                password: password,
+              }
+            );
 
-          // Search for a user by user name
-          const user = await User.findOne({
-            userName,
-          })
-            .lean()
-            .select("+password");
+            if (response.status === 200 && response.data.token.access_token) {
+              console.log(response.data.access_token);
 
-          // If user isn't found, Reject the promise and return an Error
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          // Compare password with encryption
-          const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-          if (!isPasswordMatch) {
-            throw new Error("Incorrect password");
-          }
-
-          if (user) {
-            return { ...user };
+              return response.data;
+            } else {
+              console.log("err");
+            }
+          } catch (error) {
+            console.log(error);
           }
         },
       }),
@@ -71,7 +63,7 @@ const nextAuthOptions = ({ res }: Configuration): NextAuthOptions => {
     session: {
       strategy: "jwt",
       // Seconds - How long until an idle session expires and is no longer valid.
-      maxAge: 2100,
+      maxAge: 60 * 60 * 24 * 30,
     },
 
     jwt: {
@@ -81,8 +73,15 @@ const nextAuthOptions = ({ res }: Configuration): NextAuthOptions => {
     // pages: {},
     callbacks: {
       async session({ session, token: { user } }) {
-        // Assign user on the current session
         user && (session.user = user as UserType);
+
+        // Assign user on the current session
+        res?.setHeader("set-cookie", [
+          `user=${JSON.stringify(
+            session.user.token.access_token
+          )}; max-age=60 * 60 * 24 * 30; path=/; samesite=lax;`,
+        ]);
+
         return session;
       },
 

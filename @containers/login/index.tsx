@@ -3,7 +3,7 @@ import { type FC, useState } from "react";
 
 // NextJS
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 // Global components
 import { AlertBox, Button, Heading, Icon } from "@components";
@@ -19,9 +19,7 @@ import styled, { css } from "styled-components";
 // Global styles
 import { Field, Label } from "@styles";
 
-import { LogoIcon } from '../../svgs/LogoIcon'
-
-import axios from 'axios';
+import { LogoIcon } from "../../svgs/LogoIcon";
 
 const Login = styled.div`
   min-height: 100vh;
@@ -101,40 +99,6 @@ const index: FC = () => {
   // Handle hide/shop password
   const [visiblePassword, setVisiblePassword] = useState(false);
 
-  const API_URL = 'http://localhost:8000/api/v1'
-
-  const handleLogin = async (values: Formvalues, { setSubmitting }: FormikHelpers<Formvalues>) => {
-
-    // Implement client side authentication. In this example you can get data from backend, you need to set JWT token in the session and redirect user to the dashboard
-    // const { data } = await axios.post(`${API_URL}/auth`, { username: values.userName, password: values.password })
-
-    // await signIn("credentials", {
-    //   userName: values.userName,
-    //   password: values.password,
-    //   redirect: false,
-    // }).then(({ error }: any) => {
-    //   if (error === "Verification failed") {
-    //     setErrorMessage("Failed");
-    //   } else {
-    //     if (error) {
-    //       // Alert error
-    //       setErrorMessage(error);
-
-    //       // Disable submitting
-    //       setTimeout(() => {
-    //         setSubmitting(false);
-    //       }, 500);
-    //     } else {
-    //       // Set error to false
-    //       setErrorMessage("");
-
-    //       // Reroute user to the dashboard
-    //       router.push("/");
-    //     }
-    //   }
-    // });
-  }
-
   return (
     <Login>
       <Container>
@@ -166,7 +130,37 @@ const index: FC = () => {
                   password: "",
                 }}
                 validationSchema={LoginSchema}
-                onSubmit={handleLogin}>
+                onSubmit={async (
+                  values: Formvalues,
+                  { setSubmitting }: FormikHelpers<Formvalues>
+                ) => {
+                  await signIn("Login", {
+                    userName: values.userName,
+                    password: values.password,
+                    redirect: false,
+                  }).then(({ error }: any) => {
+                    if (error === "Verification failed") {
+                      setErrorMessage("Failed");
+                    } else {
+                      if (error) {
+                        // Alert error
+                        setErrorMessage(error);
+
+                        // Disable submitting
+                        setTimeout(() => {
+                          setSubmitting(false);
+                        }, 500);
+                      } else {
+                        // Set error to false
+                        setErrorMessage("");
+
+                        // Reroute user to the dashboard
+                        router.push("/");
+                      }
+                    }
+                  });
+                }}
+              >
                 {({
                   values,
                   touched,

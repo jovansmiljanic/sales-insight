@@ -1,11 +1,5 @@
-// Vendor types
-import type { PopulatedDoc } from "mongoose";
-
-// Vendors
-import mongoose from "mongoose";
-
 export interface IArticle {
-  _id?: mongoose.Types.ObjectId;
+  _id?: string;
   name: string;
   quantity: string;
   price: string;
@@ -14,5 +8,4 @@ export interface IArticle {
 export interface Article {
   name: string;
   articleId: string;
-  article: PopulatedDoc<Article>;
 }

@@ -224,12 +224,12 @@ const index: FC<UserTable> = ({ role, query, searchUrl }) => {
                   <Tbody key={i}>
                     <tr>
                       <td onClick={() => copyText(item._id)}>
-                        #{item._id.slice(0, 5)}
+                        #{item.id.slice(0, 5)}
                       </td>
-                      <td>{item.fullName}</td>
-                      <td>{item.email}</td>
-                      <td>{item.userName}</td>
-                      <td>{getUserRole(item.role)}</td>
+                      <td>{item.attributes.name}</td>
+                      <td>{item.attributes.email}</td>
+                      <td>{item.attributes.username}</td>
+                      <td>{item.type}</td>
                       <td>
                         <Icon
                           $icon="trash"

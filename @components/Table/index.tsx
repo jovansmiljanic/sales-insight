@@ -75,6 +75,7 @@ interface Grid {
   $orders?: boolean;
   $myOrders?: boolean;
   $session?: Session;
+  $token?: any;
 }
 
 const index: FC<Grid> = ({
@@ -84,6 +85,7 @@ const index: FC<Grid> = ({
   $users,
   $myOrders,
   $session,
+  $token,
 }) => {
   const { query } = useRouter();
 
@@ -129,25 +131,24 @@ const index: FC<Grid> = ({
     setIsLoading(true);
 
     // Call axios with filters and page as a string url
-    const url = `/api/${$apiPath}/?${queryUrl}${searchUrl}&page=${page}&limit=${limit}&skip=${pageMemo}`;
+    const url = `http://localhost:8000/api/v1/users/?${queryUrl}${searchUrl}&page=${page}&limit=${limit}&skip=${pageMemo}`;
 
-    await axios.get(url).then(({ data: { items, length } }) => {
-      if ($myOrders) {
-        const myOrders = items.filter(
-          (item: any) => item.owner === $session?.user.userName
-        );
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + $token,
+        },
+      })
+      .then(({ data }) => {
+        setUpdatedItems(data.data);
 
-        setUpdatedItems(myOrders);
-      } else {
-        setUpdatedItems(items);
-      }
+        // Length
+        setLength(data.data.length);
 
-      // Length
-      setLength(length);
-
-      // Set loader
-      setIsLoading(false);
-    });
+        // Set loader
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -190,8 +191,6 @@ const index: FC<Grid> = ({
     [pageMemo],
     50
   );
-
-  const router = useRouter();
 
   return (
     <GridContext.Provider
