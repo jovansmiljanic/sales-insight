@@ -100,14 +100,14 @@ const index: FC = () => {
   return (
     <Pagination>
       <Button
-        disabled={!Boolean(page !== 0)}
+        disabled={!Boolean(page !== 1)}
         onClick={() => {
           // Change pagination index
           push(`?${queryUrl}${searchUrl}&page=${page - 1}`);
 
           scrollUp();
         }}
-        isHidden={!Boolean(page !== 0)}
+        isHidden={!Boolean(page !== 1)}
       >
         <svg
           width="40"
@@ -142,10 +142,10 @@ const index: FC = () => {
         ).map((el) => (
           <PageNumber
             pageColor="#208DD0"
-            isActive={el === page}
+            isActive={el + 1 === page}
             key={el}
             onClick={() => {
-              push(`?${queryUrl}&page=${el}${searchUrl}`);
+              push(`?${queryUrl}&page=${el + 1}${searchUrl}`);
 
               scrollUp();
             }}

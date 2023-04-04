@@ -94,7 +94,7 @@ const index: FC<Grid> = ({
   const filtersMemo = useMemo(() => filters, [filters]);
 
   // Declare pagination
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const pageMemo = useMemo(() => page, [page]);
 
   // Declare search query
@@ -110,7 +110,7 @@ const index: FC<Grid> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Store the current limit of the pagination
-  const limit = 12;
+  const limit = 1;
 
   // Set selected value
   const [rolesSelected, setRolesSelected] = useState<Checkbox[] | undefined>();
@@ -141,10 +141,12 @@ const index: FC<Grid> = ({
         },
       })
       .then(({ data }) => {
+        console.log(data);
+
         setUpdatedItems(data.data);
 
         // Length
-        setLength(data.data.length);
+        setLength(data.meta.last_page);
 
         // Set loader
         setIsLoading(false);
@@ -170,14 +172,14 @@ const index: FC<Grid> = ({
 
     // Update page number
     if (queryPage) setPage(Math.round(Number(queryPage.toString())));
-    else setPage(0);
+    else setPage(1);
   }, [query]);
 
   useDebouncedEffect(
     () =>
       // Fetch items from page 0
       fetchItems({
-        page: 0,
+        page: 1,
       }),
     [, filtersMemo],
     50

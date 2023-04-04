@@ -194,7 +194,7 @@ const index: FC<UserTable> = ({ role, query, searchUrl }) => {
                       query: { ...oldQuery, role: mp },
                     });
 
-                    router.push(`?${filterQuery}${searchUrl}&page=${0}`);
+                    router.push(`?${filterQuery}${searchUrl}&page=${1}`);
                   }
                 }}
               />
